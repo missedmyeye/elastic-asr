@@ -1,4 +1,6 @@
 data
+output_log
 **testing**
+**backup**
 .DS_Store
 __pycache__

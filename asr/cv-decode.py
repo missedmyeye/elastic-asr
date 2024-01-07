@@ -6,14 +6,14 @@ import logging
 import signal
 
 # Configure logging to write to a file
-logging.basicConfig(filename='transcription_log-testing.txt', level=logging.INFO)
+logging.basicConfig(filename='output_log/transcription_log.txt', level=logging.INFO)
 
 # ASR API URL
 asr_api_url = "http://localhost:8001/asr"
 
 # Global variables for tracking progress and storing DataFrames
 dfs = []
-processed_files = 0
+processed_files = []
 checkpoint_interval = 100  # Save checkpoint every 100 files
 
 # Function to transcribe audio using ASR API
@@ -60,33 +60,61 @@ def save_checkpoint(remove_last_entry=False):
     dfs = []
 
 # Function to process audio dataset and update CSV
-def process_audio_dataset(dataset_path, output_csv_path):
+def process_audio_dataset(dataset_path, input_csv_path, output_csv_path):
     global processed_files
     global dfs
 
     # Set up signal handler
     signal.signal(signal.SIGINT, signal_handler)
 
+    # Read input CSV to DataFrame
+    input_df = pd.read_csv(input_csv_path)
+
     # Check if CSV file exists, and if so, load it
     if os.path.isfile(output_csv_path):
         logging.info(f"CSV file '{output_csv_path}' found. Resuming from the last checkpoint.")
-        df = pd.read_csv(output_csv_path)
-        processed_files = list(df["filename"])
-        # tqdm_init = len(processed_files)
+        output_df = pd.read_csv(output_csv_path)
+        if "generated_text" in output_df.columns:
+            processed_files = list(output_df[output_df["generated_text"].notnull()]["filename"])
+        else:
+            processed_files = []
     else:
         logging.info(f"CSV file '{output_csv_path}' not found. Starting from scratch.")
         processed_files = []
-        # tqdm_init = 0
 
     # Iterate through audio files in the dataset folder
-    # for filename in tqdm(os.listdir(dataset_path), desc="Processing files", unit="file", initial=tqdm_init):
-    for filename in tqdm(os.listdir(dataset_path), desc="Processing files", unit="file"):
+    for _, row in tqdm(input_df.iterrows(), desc="Processing files", total=len(input_df),unit="file"):
+        filename = row["filename"]
         if filename.endswith(".mp3") and filename not in processed_files:
-            audio_file_path = os.path.join(dataset_path, filename)
+            audio_file_path = f"{dataset_path}/{filename}"  # Update with the correct path
+
             transcription, duration = transcribe_audio(audio_file_path)
 
             # Create a DataFrame for the current row
-            df_row = pd.DataFrame([[dataset_path,filename, transcription, duration]], columns=["directory","filename", "generated_text", "duration"])
+            df_row = pd.DataFrame(
+                [[
+                    filename,
+                    row.text,
+                    row.up_votes,
+                    row.down_votes,
+                    row.age,
+                    row.gender,
+                    row.accent,
+                    duration,
+                    transcription,
+                    ]],
+                columns=[
+                    "filename",
+                    "text",
+                    "up_votes",
+                    "down_votes",
+                    "age",
+                    "gender",
+                    "accent",
+                    "duration",
+                    "generated_text"
+                    ]
+                    )
 
             # Append the DataFrame to the list
             dfs.append(df_row)
@@ -111,13 +139,15 @@ if __name__ == "__main__":
     # Specify the path to the audio dataset and the output CSV file
     # Setting relative path, assuming that code is run from repo parent folder htx-asr
     #TODO Pend transfer to configs if time allows
-    audio_data_path = "data/common_voice/cv-valid-dev/cv-valid-dev"
+    audio_data_path = "data/common_voice/cv-valid-dev"
+    input_csv_path = "data/common_voice/cv-valid-dev.csv"
     output_csv_path = "asr/cv-valid-dev.csv"
 
     # Testing
-    # audio_data_path = "data/common_voice/cv-testing"
+    # audio_data_path = "data/common_voice/cv-valid-dev"
+    # input_csv_path = "data/common_voice/cv-valid-dev-test.csv"
     # output_csv_path = "asr/cv-testing.csv"
 
     # Process audio dataset
-    process_audio_dataset(audio_data_path, output_csv_path)
+    process_audio_dataset(audio_data_path,input_csv_path,output_csv_path)
     logging.info("Job Complete")

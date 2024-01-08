@@ -6,6 +6,7 @@ import torch
 import io
 import os
 from pydub import AudioSegment
+import logging
 
 app = FastAPI()
 
@@ -37,6 +38,23 @@ async def transcribe_audio(file: UploadFile = File(...)):
 
         # Close uploaded file
         await file.close()
+        current_directory = os.getcwd()
+        result = search_file(current_directory, file.filename)
+
+        if result:
+            logging.info(f"File found at: {result}")
+            # Confirm file exists
+            if os.path.exists(result):
+                logging.info("Delete uploaded file.")
+                os.remove(result)
+            else:
+                logging.info("File does not exist, check filepath.")
+            if os.path.exists(result):
+                logging.info("File failed to delete.")
+            else:
+                logging.info("File deleted successfully.")
+        else:
+            logging.info("File not found in the specified directory.")
 
     except Exception as e:
         return JSONResponse(content={"error": f"Failed to load audio: {e}"}, status_code=500)
@@ -47,9 +65,20 @@ async def transcribe_audio(file: UploadFile = File(...)):
     logits = model(input_values).logits
     predicted_ids = torch.argmax(logits, dim=-1)
     transcription = processor.batch_decode(predicted_ids)[0]
-    print(transcription)
+    logging.info(transcription)
 
     # Duration calculation
     duration = len(audio_input) / rate
 
     return {"transcription": transcription, "duration": duration}
+
+def search_file(directory, filename):
+    # Walk through the directory and its subdirectories
+    for root, dirs, files in os.walk(directory):
+        # Check if the filename is in the list of files
+        if filename in files:
+            # Return the full path to the file
+            return os.path.join(root, filename)
+
+    # If the file is not found, return None
+    return None

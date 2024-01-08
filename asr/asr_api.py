@@ -6,6 +6,7 @@ import torch
 import io
 import os
 from pydub import AudioSegment
+import tempfile
 
 app = FastAPI()
 
@@ -43,6 +44,10 @@ async def transcribe_audio(file: UploadFile = File(...)):
 
         # Remove the temporary WAV file
         os.remove(temp_wav_path)
+
+        # Close uploaded file
+        await file.close()
+
     except Exception as e:
         return JSONResponse(content={"error": f"Failed to load audio: {e}"}, status_code=500)
 

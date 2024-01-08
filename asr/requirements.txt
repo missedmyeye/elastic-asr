@@ -1,6 +1,6 @@
-python=3.10
-tensorflow-deps==2.10.0
-pip==23.3.1
+# python==3.10
+# tensorflow-deps==2.10.0
+# pip==23.3.1
 # sqlalchemy==1.4.39
 pandas==2.1.4
 numpy==1.24.3
@@ -9,8 +9,9 @@ ipykernel==6.9.2
 # mlflow==1.22.0 #2.9.2
 # pylint==2.6.0
 # pytest-cov==2.10.1
-tensorflow-macos==2.13.0
-tensorflow-metal==1.1.0
+tensorflow==2.13.0
+# tensorflow-macos==2.13.0
+# tensorflow-metal==1.1.0
 tensorflow_hub==0.10.0
 python-json-logger==2.0.2
 fastapi==0.70.1
@@ -27,3 +28,5 @@ torch==2.1.2
 torchaudio==2.1.2
 torchvision==0.16.2
 python-multipart==0.0.6
+librosa==0.10.1
+pydub==0.25.1

@@ -20,7 +20,7 @@ echo "PWD: $PWD"
 
 # gunicorn vits_fastapi.main:APP -b 0.0.0.0:8080 -w $NUM_WORKERS -k uvicorn.workers.UvicornWorker --timeout $TIMEOUT_DURATION
 # gunicorn lightspeed_fastapi.main:APP -b 0.0.0.0:8080 -w 4 -k uvicorn.workers.UvicornWorker --timeout 90
-gunicorn -w 4 -k uvicorn.workers.UvicornWorker asr.asr_api:app --bind 0.0.0.0:8001 --timeout=300
+gunicorn -w 2 -k uvicorn.workers.UvicornWorker asr.asr_api:app --bind 0.0.0.0:8001 --timeout=300
 
 ## Alternatively:
 # bash vits_fastapi.sh $INPUT_FILE $OUTPUT_FILE $PRED_MODEL_UUID $PRED_MODEL_PATH

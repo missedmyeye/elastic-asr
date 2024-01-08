@@ -6,7 +6,6 @@ import torch
 import io
 import os
 from pydub import AudioSegment
-import tempfile
 
 app = FastAPI()
 
@@ -20,15 +19,6 @@ def ping():
 
 @app.post("/asr")
 async def transcribe_audio(file: UploadFile = File(...)):
-    # try:
-    #     # Use pydub to load and convert the audio to WAV format
-    #     audio_data = AudioSegment.from_file(io.BytesIO(file.file.read()), format="mp3")
-    #     wav_data = audio_data.export(format="wav")
-
-    #     # Load the converted WAV audio
-    #     audio_input, rate = torchaudio.load(io.BytesIO(wav_data.read()), normalize=True)
-    # except Exception as e:
-    #     return JSONResponse(content={"error": f"Failed to load audio: {e}"}, status_code=500)
     try:
         # Use pydub to load and convert the audio to WAV format
         audio_data = AudioSegment.from_file(io.BytesIO(file.file.read()), format="mp3")
@@ -53,10 +43,6 @@ async def transcribe_audio(file: UploadFile = File(...)):
 
 
     # Model inference
-    # input_values = processor(audio_input.squeeze().numpy(), return_tensors="pt", sampling_rate=16000).input_values
-    # logits = model(input_values).logits
-    # predicted_ids = torch.argmax(logits, dim=-1)
-    # transcription = processor.batch_decode(predicted_ids)[0]
     input_values = processor(audio_input, return_tensors="pt", sampling_rate=16000).input_values
     logits = model(input_values).logits
     predicted_ids = torch.argmax(logits, dim=-1)
@@ -64,7 +50,6 @@ async def transcribe_audio(file: UploadFile = File(...)):
     print(transcription)
 
     # Duration calculation
-    # duration = len(audio_input[0]) / rate
     duration = len(audio_input) / rate
 
     return {"transcription": transcription, "duration": duration}

@@ -63,6 +63,10 @@ mapping = {
         }
     }
 
+# Delete the index if it exists
+if es.indices.exists(index=index_name):
+    es.indices.delete(index=index_name)
+
 # Create the index with mapping
 es.indices.create(index=index_name, body=mapping, ignore=400)
 

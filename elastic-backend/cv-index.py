@@ -18,6 +18,54 @@ def wait_for_elasticsearch():
 # Wait for Elasticsearch to start before proceeding
 es = wait_for_elasticsearch()
 
+# Read CSV file
+csv_file = 'cv-valid-dev.csv'
+df = pd.read_csv(csv_file)
+# Replace null values with an empty string
+# Elasticsearch is unable to parse null values
+df = df.fillna('')
+print(f'Reading CSV...{csv_file}')
+print(df.head())
+
+# Set up mapping for index
+index_name = 'cv-transcriptions'
+mapping = {
+    "mappings": {
+        "properties": {
+            "filename": {"type": "keyword"},
+            "text": {
+                "type": "text",
+                "analyzer": "standard",
+            },
+            "up_votes": {"type": "integer"},
+            "down_votes": {"type": "integer"},
+            "age": {
+                "type": "text",
+                "analyzer": "standard",  # Age provided in text in dataset
+            },
+            "gender": {"type": "keyword"},
+            "accent": {"type": "keyword"},
+            "duration": {"type": "float"},
+            "generated_text": {
+                "type": "text",
+                "analyzer": "standard",
+                "fields": {
+                    "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                    }
+                    },
+                "suggest": {
+                    "type": "completion"
+                    }
+                }
+            }
+        }
+    }
+
+# Create the index with mapping
+es.indices.create(index=index_name, body=mapping, ignore=400)
+
 # Indexing function
 def index_data(index_name, data_frame, es):
     for _, row in tqdm(
@@ -28,14 +76,5 @@ def index_data(index_name, data_frame, es):
         es.index(index=index_name, body=document)
     print("Indexing complete.")
 
-# Read CSV file
-csv_file = 'cv-valid-dev.csv'
-df = pd.read_csv(csv_file)
-# Replace null values with an empty string
-# Elasticsearch is unable to parse null values
-df = df.fillna('')
-print(f'Reading CSV...{csv_file}')
-print(df.head())
 # Index data into Elasticsearch
-index_name = 'cv-transcriptions'
 index_data(index_name, df, es)

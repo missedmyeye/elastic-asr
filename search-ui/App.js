@@ -18,9 +18,6 @@ import { Layout } from "@elastic/react-search-ui-views";
 import "@elastic/react-search-ui-views/lib/styles/styles.css";
 
 import {
-  buildAutocompleteQueryConfig,
-  buildFacetConfigFromConfig,
-  buildSearchOptionsFromConfig,
   buildSortOptionsFromConfig,
   getConfig,
   getFacetFields
@@ -71,6 +68,9 @@ const config = {
       accent: {
         snippet: {}
       },
+      // filename: {
+      //   snippet: {}
+      // }
     },
     disjunctiveFacets: ["gender.keyword", "accent.keyword"],
     facets: {
@@ -140,7 +140,7 @@ export default function App() {
                           sortOptions={buildSortOptionsFromConfig()}
                         />
                       )}
-                      {getFacetFields().map(field => (
+                      {getFacetFields().map((field) => (
                         <Facet key={field} field={field} label={field} />
                       ))}
                     </div>

@@ -20,11 +20,11 @@ es = wait_for_elasticsearch()
 
 # Read CSV file
 csv_file = 'cv-valid-dev.csv'
+print(f'Reading CSV...{csv_file}')
 df = pd.read_csv(csv_file)
 # Replace null values with an empty string
 # Elasticsearch is unable to parse null values
 df = df.fillna('')
-print(f'Reading CSV...{csv_file}')
 print(df.head())
 
 # Set up mapping for index

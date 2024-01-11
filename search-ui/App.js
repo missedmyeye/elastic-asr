@@ -50,7 +50,7 @@ const config = {
       generated_text: {
         weight: 3
       },
-      duration: {},
+      // duration: {},
       age: {},
       gender: {},
       accent: {}
@@ -109,7 +109,6 @@ const config = {
             fallback: true
           }
         }
-        // You can add more result fields as needed
       }
     },
     suggestions: {
@@ -132,7 +131,7 @@ export default function App() {
             <div className="App">
               <ErrorBoundary>
                 <Layout
-                  header={<SearchBox autocompleteSuggestions={true} />}
+                  header={<SearchBox  />}
                   sideContent={
                     <div>
                       {wasSearched && (

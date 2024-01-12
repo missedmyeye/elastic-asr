@@ -18,6 +18,17 @@ MacOS Sonoma 14.2.1<br>
 8GB RAM<br>
 Other requirements:<br>
 - Docker engine ([Rancher Desktop](https://rancherdesktop.io/) was used)<br>
+    ```
+    $ docker version
+    Client:
+    Version:           24.0.2-rd
+    API version:       1.42 (downgraded from 1.43)
+    Go version:        go1.20.4
+    Git commit:        e63f5fa
+    Built:             Fri May 26 16:40:56 2023
+    OS/Arch:           darwin/arm64
+    Context:           rancher-desktop
+    ```
 - [Miniconda](https://docs.conda.io/projects/miniconda/en/latest/)
 - [Homebrew (For MacOS/Linux)](https://brew.sh/)
 - Node.js (v18.19.0)
@@ -139,6 +150,14 @@ Please update your current environment with the following packages, if not alrea
 pip install elasticsearch==7.15.2
 pip install tqdm==4.66.1
 ```
+### Further configuration
+Please update Docker vm's `mmap` counts to avoid out-of-memory exceptions. Refer to [this link](https://www.elastic.co/guide/en/elasticsearch/reference/7.15/vm-max-map-count.html) for more information.
+```
+docker run -it --privileged --pid=host debian nsenter -t 1 -m -u -n -i sh
+/ # sysctl -w vm.max_map_count=262144
+vm.max_map_count = 262144
+```
+Input `exit` to exit from the Docker VM terminal.
 ### Run docker container and index CSV file
 Navigate to `/elastic-backend` and run the `docker-compose.yml` file to bring up the cluster and run the indexing service:
 ```bash
@@ -160,7 +179,20 @@ cd elastic-backend/
 docker-compose down
 ```
 ## Search UI Frontend
-### For running locally
+### Running via Docker
+Navigate to `/search-ui`
+```
+docker-compose up --build
+```
+You should be able to access the search UI via http://localhost:3000 after the running is complete.<br>
+<br>
+To close the Search UI frontend:<br>
+In the terminal displaying the container logs, press Ctrl+C<br>
+OR with another terminal, navigate to the relevant folder `/search-ui`
+```bash
+docker-compose down
+```
+### Running locally
 Instructions were adapted from [this tutorial on SearchUI](https://docs.elastic.co/search-ui/tutorials/elasticsearch), starting from Step 4<br>
 In a separate directory, please download Search UI's starter app:<br>
 ```bash
@@ -171,6 +203,7 @@ Navigate to `/app-search-reference-ui-react-main` and replace the following file
 App.js (in src folder)
 package-lock.json
 package.json
+engine.json (in src/config folder)
 ```
 This is done to resolve dependency issues and to update the App.js relevant to the content of this repository.<br>
 
@@ -187,12 +220,6 @@ Start up the page (Make sure that you have not closed the Elasticsearch backend 
 yarn start
 ```
 You should be able to access the search UI via http://localhost:3000 after the running is complete. To end it, press Ctrl+C.
-### Running docker (pending debug)
-Navigate to `/search-ui`
-```
-docker-compose up --build
-```
-You should be able to access the search UI via http://localhost:3000 after the running is complete.
 ## Cloud Deployment (AWS)
 Pending to set up. Here is a description of the intended deployment architecture, showing the flow during input of query and returning of result:<br>
 ![image](deployment-design/deployment-architecture.jpg)

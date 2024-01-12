@@ -63,15 +63,6 @@ RUN $CONDA_BIN create --name $CONDA_ENV_NAME python=3.10 && \
     $CONDA_BIN run -n $CONDA_ENV_NAME conda env update -f environment.yml && \
     echo "source activate $CONDA_ENV_NAME" >> "$HOME_DIR/.bashrc"
 
-# Install Tensorflow
-# RUN conda config --add channels apple
-# RUN conda config --add channels conda-forge
-# RUN conda install -c apple tensorflow-deps==2.10.0
-# RUN python -m pip install tensorflow==2.13.0
-# RUN python -m pip install tensorflow-macos
-# RUN python -m pip install tensorflow-metal
-# RUN python -m pip install tensorflow_hub==0.10.0
-
 # Copy the contents of the local asr directory into the container at /app/asr
 # RUN mkdir $HOME_DIR/asr
 COPY $REPO_DIR $HOME_DIR/asr

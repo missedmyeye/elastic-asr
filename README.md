@@ -33,7 +33,90 @@ Other requirements:<br>
     npm install --global yarn
     ```
 ## ASR Inference API
+### Environment Setup (For running locally)
+Navigate to `/asr` and install via Miniconda or PIP. Uncomment the tensorflow packages in `requirements.txt` if using MacOS
+```bash
+$ conda env create -f environment.yml
+OR
+$ conda env create -n asr_api_env python=3.10
+$ pip install -r requirements.txt
 
+$ conda activate asr_api_env
+```
+Install `ffmpeg`
+```bash
+brew install ffmpeg
+```
+### Download dataset
+Go back to the repository folder and create a folder `data`
+```bash
+cd ..
+# You should be in /htx-asr
+mkdir data
+```
+Download the dataset into this folder `data`. It should have the following folder structure:<br>
+The key things to have are `cv-valid-dev` folder and `cv-valid-dev.csv`
+```
+/data
+└── common_voice
+    ├── cv-invalid
+    │   └── cv-invalid
+    ├── cv-other-dev
+    │   └── cv-other-dev
+    ├── cv-other-test
+    │   └── cv-other-test
+    ├── cv-other-train
+    │   └── cv-other-train
+    ├── cv-testing
+    ├── cv-valid-dev
+    │   └── cv-valid-dev
+    ├── cv-valid-test
+    │   └── cv-valid-test
+    ├── cv-valid-train
+    │   └── cv-valid-train
+    ├── LICENSE.txt
+    ├── README.txt
+    ├── cv-valid-dev-backup.csv
+    ├── cv-valid-test.csv
+    ├── cv-other-dev.csv
+    ├── cv-other-train.csv
+    ├── cv-valid-dev-test.csv
+    ├── cv-valid-dev.csv
+    ├── cv-valid-train.csv
+    ├── cv-invalid.csv
+    └── cv-other-test.csv
+```
+### Running locally
+Make sure you are in `/htx-asr` folder before running the API. Otherwise, adjust your paths accordingly. (e.g. if in `asr` folder, then change `asr.asr_api:app` to `asr_api:app`)<br>
+If you have a larger RAM feel free to adjust `-w 2` to a higher value.
+```bash
+gunicorn -w 2 -k uvicorn.workers.UvicornWorker asr_api:app --bind 0.0.0.0:8001 --timeout=300
+```
+### Running docker image
+Build and run the Docker image, update version numbers as you see fit:
+```bash
+docker build --platform=linux/arm64 -t asrapi:1.0.12 ./asr
+docker run -p 8001:8001 asrapi:1.0.12
+```
+### Testing API and running inference
+Open another terminal and ping to check if the server is up:
+```bash
+curl http://localhost:8001/ping
+>>> {"response":"pong"}
+```
+To run inference on a single file, here is an example:
+```bash
+curl -F file=@data/common_voice/cv-valid-dev/cv-valid-dev/sample-000000.mp3 http://localhost:8001/asr
+>>> {"transcription":"BE CAREFUL WITH YOUR PROGNOSTICATIONS SAID THE STRANGER","duration":5.064}
+```
+To run inference on a dataset:<br>
+    Before running, please take note of the following:
+    1. Make sure the filepaths `audio_data_path`, `input_csv_path` and `output_csv_path` in `cv-decode.py` are accurate.<br>
+    2. If running locally, please comment out line 37 of `asr_api.py`, if not your audio file will be deleted. (`os.remove(temp_wav_path)`)
+```bash
+python -m asr.cv-decode
+```
+You should receive an output `cv-valid-dev.csv` in folder `/asr`, which should appear while the process is running as it is updating at regular intervals. **Should the process be interrupted halfway, just run it again without removing any files as there are measures implemented to resume from where it left off.**
 ## Dataset Information/Analysis
 
 ## Dataset Processing

@@ -38,11 +38,11 @@ Other requirements:<br>
 Navigate to `/asr` and install via Miniconda or PIP. Uncomment the tensorflow packages in `requirements.txt` if using MacOS
 ```bash
 $ conda env create -f environment.yml
+$ conda activate asr_api_env
 OR
 $ conda env create -n asr_api_env python=3.10
-$ pip install -r requirements.txt
-
 $ conda activate asr_api_env
+$ pip install -r requirements.txt
 ```
 Install `ffmpeg`
 ```bash
@@ -87,17 +87,19 @@ The key things to have are `cv-valid-dev` folder and `cv-valid-dev.csv`
     ├── cv-invalid.csv
     └── cv-other-test.csv
 ```
+### Running docker image
+Make sure you are in `/htx-asr` folder before running the API. <br>
+Otherwise, adjust your paths accordingly. (e.g. if in `asr` folder, then change `./asr` to `.`)<br>
+Build and run the Docker image, update version numbers as you see fit:
+```bash
+docker build --platform=linux/arm64 -t asrapi:1.0.12 ./asr
+docker run -p 8001:8001 asrapi:1.0.12
+```
 ### Running locally
 Make sure you are in `/htx-asr` folder before running the API. Otherwise, adjust your paths accordingly. (e.g. if in `asr` folder, then change `asr.asr_api:app` to `asr_api:app`)<br>
 If you have a larger RAM feel free to adjust `-w 2` to a higher value.
 ```bash
 gunicorn -w 2 -k uvicorn.workers.UvicornWorker asr_api:app --bind 0.0.0.0:8001 --timeout=300
-```
-### Running docker image
-Build and run the Docker image, update version numbers as you see fit:
-```bash
-docker build --platform=linux/arm64 -t asrapi:1.0.12 ./asr
-docker run -p 8001:8001 asrapi:1.0.12
 ```
 ### Testing API and running inference
 Open another terminal and ping to check if the server is up:

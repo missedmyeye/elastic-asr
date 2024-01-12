@@ -56,7 +56,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y ffmpeg
 COPY $REPO_DIR/$CONDA_ENV_FILE $HOME_DIR/asr/$CONDA_ENV_FILE
 COPY $REPO_DIR/$REQ_FILE $HOME_DIR/asr/$REQ_FILE
 
-RUN python -m pip install --upgrade pip
+RUN python -m pip install --upgrade pip --default-timeout=180
 
 # Create Conda environment
 RUN $CONDA_BIN create --name $CONDA_ENV_NAME python=3.10 && \

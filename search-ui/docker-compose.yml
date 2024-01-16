@@ -4,7 +4,7 @@ services:
     build: .
     container_name: search-ui
     environment:
-      - ELASTICSEARCH_HOST=http://localhost:9200 # http://es01:9200
+      - ELASTICSEARCH_HOST=http://13.214.153.0:9200 # http://es01:9200
       - ELASTICSEARCH_API_VERSION=7
     ports:
       - "3000:3000"

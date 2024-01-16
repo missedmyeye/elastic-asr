@@ -221,7 +221,8 @@ yarn start
 ```
 You should be able to access the search UI via http://localhost:3000 after the running is complete. To end it, press Ctrl+C.
 ## Cloud Deployment (AWS)
-Pending to set up. Here is a description of the intended deployment architecture, showing the flow during input of query and returning of result:<br>
+The Search UI can be accessed [here](http://ec2-13-214-153-0.ap-southeast-1.compute.amazonaws.com:3000/), however it is still in the midst of debugging. <br>
+Here is a description of the intended deployment architecture, showing the flow during input of query and returning of result:<br>
 ![image](deployment-design/deployment-architecture.jpg)
 ## Future Improvements/Considerations
 ### Config files

@@ -28,7 +28,7 @@ RUN yarn install
 RUN yarn add @elastic/search-ui-elasticsearch-connector
 
 # Copy the updated application file
-COPY App.js ./src/App.js
+COPY App_aws.js ./src/App.js
 
 EXPOSE 3000
 

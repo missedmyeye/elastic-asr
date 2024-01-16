@@ -72,14 +72,14 @@ const config = {
       //   snippet: {}
       // }
     },
-    // disjunctiveFacets: ["gender.keyword", "accent.keyword"],
+    disjunctiveFacets: ["gender.keyword", "accent.keyword"],
     facets: {
-      // "gender.keyword": { type: "value" },
-      // "accent.keyword": { type: "value" },
-      // "age.keyword": {
-      //   type: "value", // Change type to "value" for keyword-style search
-      //   size: 10, // Set the number of displayed values in the facet
-      // },
+      "gender.keyword": { type: "value" },
+      "accent.keyword": { type: "value" },
+      "age.keyword": {
+        type: "value", // Change type to "value" for keyword-style search
+        size: 10, // Set the number of displayed values in the facet
+      },
       duration: {
         type: "range",
         ranges: [

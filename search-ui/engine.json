@@ -4,21 +4,21 @@
   "searchKey": "search-nyxkw1fuqex9qjhfvatbqfmw",
   "searchFields": ["generated_text", "age", "gender", "accent"],
   "resultFields": [
-    "text",
-    "generated_text",
-    "duration",
-    "age",
-    "gender",
+    "text", 
+    "generated_text", 
+    "duration", 
+    "age", 
+    "gender", 
     "accent"
   ],
   "querySuggestFields": ["generated_text"],
   "titleField": "generated_text",
   "sortFields": ["duration"],
   "facets": [
-    "generated_text",
-    "duration",
-    "age",
-    "gender",
+    "generated_text", 
+    "duration", 
+    "age", 
+    "gender", 
     "accent"
   ]
 }

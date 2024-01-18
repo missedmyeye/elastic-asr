@@ -46,25 +46,25 @@ const config = {
     search_fields: {
       generated_text: {
         weight: 3
-      },
+      }, 
       // duration: {},
-      age: {},
-      gender: {},
+      age: {}, 
+      gender: {}, 
       accent: {}
     },
     result_fields: {
       generated_text: {
         snippet: {}
-      },
+      }, 
       duration: {
         snippet: {}
-      },
+      }, 
       age: {
         snippet: {}
-      },
+      }, 
       gender: {
         snippet: {}
-      },
+      }, 
       accent: {
         snippet: {}
       },
@@ -74,12 +74,12 @@ const config = {
     },
     disjunctiveFacets: ["gender.keyword", "accent.keyword"],
     facets: {
-      "gender.keyword": { type: "value" },
-      "accent.keyword": { type: "value" },
+      "gender.keyword": { type: "value" }, 
+      "accent.keyword": { type: "value" }, 
       "age.keyword": {
         type: "value", // Change type to "value" for keyword-style search
         size: 10, // Set the number of displayed values in the facet
-      },
+      }, 
       duration: {
         type: "range",
         ranges: [
@@ -96,12 +96,12 @@ const config = {
   },
   autocompleteQuery: {
     results: {
-      resultsPerPage: 5,
+      resultsPerPage: 5, 
       search_fields: {
         "generated_text.suggest": {
           weight: 3
         }
-      },
+      }, 
       result_fields: {
         generated_text: {
           snippet: {
@@ -110,15 +110,15 @@ const config = {
           }
         }
       }
-    },
+    }, 
     suggestions: {
       types: {
         results: { fields: ["generated_text.suggest"] }
       },
       size: 4
     }
-  },
-  apiConnector: connector,
+  }, 
+  apiConnector: connector, 
   alwaysSearchOnInitialLoad: true
 };
 

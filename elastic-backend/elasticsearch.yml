@@ -1,5 +1,5 @@
 cluster.name: "docker-cluster"
-network.host: 127.0.0.1
+network.host: _local_
 
 http.port: 9200
 http.cors.allow-origin: "*"

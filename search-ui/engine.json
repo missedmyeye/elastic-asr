@@ -13,8 +13,6 @@
   ],
   "querySuggestFields": ["generated_text"],
   "titleField": "generated_text",
-  "urlField": "nps_link",
-  "thumbnailField": "image_url",
   "sortFields": ["duration"],
   "facets": [
     "generated_text",

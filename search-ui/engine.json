@@ -2,7 +2,7 @@
   "endpointBase": "http://localhost:9200",
   "engineName": "app-search-reference-ui-react",
   "searchKey": "search-nyxkw1fuqex9qjhfvatbqfmw",
-  "searchFields": ["generated_text", "duration", "age", "gender", "accent"],
+  "searchFields": ["generated_text", "age", "gender", "accent"],
   "resultFields": [
     "text",
     "generated_text",

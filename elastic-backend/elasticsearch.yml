@@ -7,7 +7,6 @@ network.bind_host: 0.0.0.0
 network.publish_host: 172.31.6.21
 discovery.seed_hosts: 
   - 0.0.0.0
-  - [::0]
   - 172.31.6.21:9300
   - 172.31.6.21:9200
   - 172.31.6.21

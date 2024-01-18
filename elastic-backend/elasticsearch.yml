@@ -1,5 +1,8 @@
 cluster.name: "docker-cluster"
-network.host: 0.0.0.0
+cluster.initial_master_nodes: 
+   - es01
+   - es02
+network.host: [_local_, _site_, _global_]
 network.bind_host: 0.0.0.0
 network.publish_host: 13.214.153.0
 discovery.seed_hosts: ["0.0.0.0", "[::0]"]

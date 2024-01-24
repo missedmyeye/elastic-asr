@@ -15,4 +15,4 @@ services:
 
 networks:
   elastic-backend_elastic:
-    driver: bridge
+    external: true   # This is an existing external network from elastic backend

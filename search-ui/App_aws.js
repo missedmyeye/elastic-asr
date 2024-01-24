@@ -23,7 +23,7 @@ import {
   getFacetFields
 } from "./config/config-helper";
 
-const elasticsearchHost = process.env.ELASTICSEARCH_HOST || 'http://es01:9200';
+const elasticsearchHost = process.env.ELASTICSEARCH_HOST;
 
 const connector = new ElasticsearchAPIConnector({
   host: elasticsearchHost,

@@ -1,6 +1,7 @@
 import React from "react";
 
-import ElasticsearchAPIConnector from "@elastic/search-ui-elasticsearch-connector";
+// import ElasticsearchAPIConnector from "@elastic/search-ui-elasticsearch-connector";
+import AppSearchAPIConnector from "@elastic/search-ui-app-search-connector";
 
 import {
   ErrorBoundary,
@@ -23,12 +24,18 @@ import {
   getFacetFields
 } from "./config/config-helper";
 
-const elasticsearchHost = process.env.ELASTICSEARCH_HOST || 'http://localhost:9200';
+// const elasticsearchHost = process.env.ELASTICSEARCH_HOST || 'http://localhost:9200';
 
-const connector = new ElasticsearchAPIConnector({
-  host: elasticsearchHost,
-  index: "cv-transcriptions",
+// const connector = new ElasticsearchAPIConnector({
+//   host: elasticsearchHost,
+//   index: "cv-transcriptions",
+// });
+const connector = new AppSearchAPIConnector({
+  searchKey: "search-nyxkw1fuqex9qjhfvatbqfmw",
+  engineName: "app-search-reference-ui-react",
+  endpointBase: "http://172.24.0.2:9200"
 });
+
 
 // Testing the connection
 fetch(connector.host)

@@ -4,12 +4,12 @@ cluster.initial_master_nodes:
    - es02
 network.host: 0.0.0.0
 network.bind_host: 0.0.0.0
-network.publish_host: 172.31.6.21
+network.publish_host: 172.23.0.2
 discovery.seed_hosts: 
   - 0.0.0.0
-  - 172.31.6.21:9300
-  - 172.31.6.21:9200
-  - 172.31.6.21
+  - 172.23.0.2:9300
+  - 172.23.0.2:9200
+  - 172.23.0.2
 
 transport.host: localhost 
 transport.tcp.port: 9300

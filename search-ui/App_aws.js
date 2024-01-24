@@ -24,7 +24,7 @@ import {
 } from "./config/config-helper";
 
 const connector = new ElasticsearchAPIConnector({
-  host: "http://172.18.0.2:9200",
+  host: "http://0.0.0.0:9200",
   index: "cv-transcriptions",
 });
 

@@ -55,9 +55,9 @@ mapping = {
                     "ignore_above": 256
                     }
                     },
-                "suggest": {
-                    "type": "completion"
-                    }
+                # "suggest": {
+                #     "type": "completion"
+                #     }
                 }
             }
         }

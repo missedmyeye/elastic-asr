@@ -15,11 +15,11 @@ RUN curl -L https://codeload.github.com/elastic/app-search-reference-ui-react/ta
 WORKDIR /usr/src/app/app-search-reference-ui-react-master
 
 # Copy the updated package files to prevent version conflict
-COPY package.json ./package.json
-COPY package-lock.json ./package-lock.json
+COPY /search-ui/package.json ./package.json
+COPY /search-ui/package-lock.json ./package-lock.json
 
 # Copy engine.json file
-COPY engine.json ./src/config
+COPY /search-ui/engine.json ./src/config
 
 # Install yarn dependencies
 RUN yarn install
@@ -28,7 +28,7 @@ RUN yarn install
 RUN yarn add @elastic/search-ui-elasticsearch-connector
 
 # Copy the updated application file
-COPY App_aws.js ./src/App.js
+COPY /search-ui/App_aws.js ./src/App.js
 
 EXPOSE 3000
 

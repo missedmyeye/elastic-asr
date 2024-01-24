@@ -100,7 +100,7 @@ const config = {
     results: {
       resultsPerPage: 5, 
       search_fields: {
-        "generated_text.suggest": {
+        "generated_text": {
           weight: 3
         }
       },
@@ -115,7 +115,7 @@ const config = {
     },
     suggestions: {
       types: {
-        results: { fields: ["generated_text.suggest"] }
+        results: { fields: ["generated_text"] }
       },
       size: 4
     }

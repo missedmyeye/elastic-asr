@@ -10,6 +10,8 @@
 - Cloud Deployment (AWS)
 - Future Improvements/Considerations
 
+>NOTE: This repository will be archived due to outdated practices and no maintenance for security vulnerabilities.
+
 ## Overview
 This repository is a step by step process to set up an API for Speech-To-Text inference (and dockerize it), then run an audio dataset through it to obtain the generated transcriptions and durations of the files and update the dataset's manifest. Subsequently, there are scripts provided to index the manifest into an Elasticsearch backend, set up a Search UI frontend to access this information, and also to deploy this service onto cloud.
 ## Prerequisites
